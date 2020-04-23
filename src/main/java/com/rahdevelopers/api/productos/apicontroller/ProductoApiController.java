@@ -3,8 +3,14 @@ package com.rahdevelopers.api.productos.apicontroller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rahdevelopers.api.productos.entity.ProductoEntity;
@@ -24,5 +30,21 @@ public class ProductoApiController {
 	@GetMapping("/{id}")
 	public ProductoEntity getProducto(@PathVariable Long id) {
 		return this.productoService.findById(id);
+	}
+
+	@PostMapping
+	public ResponseEntity<ProductoEntity> postProducto(@RequestBody ProductoEntity productoEntity) {
+		return new ResponseEntity<>(this.productoService.save(productoEntity), HttpStatus.CREATED);
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<ProductoEntity> putProducto(@RequestBody ProductoEntity productoEntity,
+			@PathVariable Long id) {
+		return new ResponseEntity<>(this.productoService.update(productoEntity, id), HttpStatus.CREATED);
+	}
+	
+	@DeleteMapping("/{id}")
+	public void deleteProducto(@PathVariable Long id) {
+		this.productoService.deleteById(id);
 	}
 }

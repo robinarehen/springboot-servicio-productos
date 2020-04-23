@@ -9,4 +9,10 @@ public interface ProductoService {
 	public List<ProductoEntity> findAll();
 	
 	public ProductoEntity findById(Long id);
+	
+	public ProductoEntity save(ProductoEntity productoEntity);
+	
+	public ProductoEntity update(ProductoEntity productoEntity, Long id);
+	
+	public void deleteById(Long id);
 }

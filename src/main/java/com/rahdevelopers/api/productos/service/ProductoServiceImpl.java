@@ -17,13 +17,13 @@ public class ProductoServiceImpl implements ProductoService {
 
 	@Autowired
 	private ProductoRepository productoRepository;
-	
+
 	@Value("${server.port}")
 	private Integer port;
 
 	@Override
 	public List<ProductoEntity> findAll() {
-		return this.productoRepository.findAll().stream().map( producto -> {
+		return this.productoRepository.findAll().stream().map(producto -> {
 			producto.setPort(this.port);
 			return producto;
 		}).collect(Collectors.toList());
@@ -35,6 +35,26 @@ public class ProductoServiceImpl implements ProductoService {
 			producto.setPort(this.port);
 			return producto;
 		}).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public ProductoEntity save(ProductoEntity productoEntity) {
+		return this.productoRepository.save(productoEntity);
+	}
+
+	@Override
+	public ProductoEntity update(ProductoEntity productoEntity, Long id) {
+		ProductoEntity entity = this.productoRepository.findById(id).orElseThrow();
+		entity.setNombre(productoEntity.getNombre());
+		entity.setPrecio(productoEntity.getPrecio());
+		return this.productoRepository.save(entity);
+	}
+
+	@Override
+	@Transactional
+	public void deleteById(Long id) {
+		this.productoRepository.deleteById(id);
 	}
 
 }

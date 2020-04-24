@@ -1,5 +1,6 @@
 package com.rahdevelopers.api.productos.apicontroller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,10 @@ public class ProductoApiController {
 
 	@PostMapping
 	public ResponseEntity<ProductoEntity> postProducto(@RequestBody ProductoEntity productoEntity) {
-		return new ResponseEntity<>(this.productoService.save(productoEntity), HttpStatus.CREATED);
+		ProductoEntity entity = this.productoService.save(productoEntity);
+		String url = String.format("/api/producto/%s", entity.getID());
+		//return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).location(URI.create(url)).body(entity);
+		return ResponseEntity.created(URI.create(url)).body(entity);
 	}
 
 	@PutMapping("/{id}")
@@ -42,7 +46,7 @@ public class ProductoApiController {
 			@PathVariable Long id) {
 		return new ResponseEntity<>(this.productoService.update(productoEntity, id), HttpStatus.CREATED);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public void deleteProducto(@PathVariable Long id) {
 		this.productoService.deleteById(id);

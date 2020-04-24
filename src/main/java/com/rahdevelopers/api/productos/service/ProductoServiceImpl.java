@@ -44,6 +44,7 @@ public class ProductoServiceImpl implements ProductoService {
 	}
 
 	@Override
+	@Transactional
 	public ProductoEntity update(ProductoEntity productoEntity, Long id) {
 		ProductoEntity entity = this.productoRepository.findById(id).orElseThrow();
 		entity.setNombre(productoEntity.getNombre());
